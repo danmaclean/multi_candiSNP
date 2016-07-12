@@ -8,11 +8,10 @@
 
 # TODO:
 # Allele Freq Range Slider - DONE
-# Colour by: Change, Effect, Is_CTGA, Is_synonymous - if present in input. 
-# Shape by: Tag
+# Colour by: Change, Effect, Is_CTGA, Is_synonymous - DONE. 
+# Shape by: Tag - DONE 
 # only call filedata if values entered in file selector
 # filter out centromeres - DONE
-# theme selector
 
 library(shiny)
 library(ggplot2)
