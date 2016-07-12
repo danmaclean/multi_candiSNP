@@ -9,7 +9,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   
-  titlePanel("title panel"), 
+  titlePanel("CandiSNP Jar"), 
   
   fluidRow(
     
@@ -22,10 +22,18 @@ shinyUI(fluidPage(
     ),
     
     column(3, 
-           h3("Help text"),
-           helpText("Note: help text isn't a true widget,", 
-                    "but it provides an easy way to add text to",
-                    "accompany other widgets."))
+           helpText("Plots and filters SNPs from multiple experiments",
+                    "annotated on the",
+                    "Arabidopsis TAIR 10 genome with CandiSNP."),
+           
+           helpText("To use:"),
+           helpText("1. Select as many CandiSNP input",
+                    " or output files to load as you like."
+                    ),
+           helpText("2. Give each file a unique tag to identify them in the outputs."
+           ),
+           helpText("3. Select the view options as appropriate.")
+           )
     
   ),
   
@@ -36,27 +44,42 @@ shinyUI(fluidPage(
   
 
   
-  selectInput(inputId = "n_breaks",
-              label = "Number of bins in histogram (approximate):",
-              choices = c(10, 20, 35, 50),
-              selected = 20),
+
   
+
+sliderInput("range", "Allele Frequency Range:",
+            min = 0, max = 1, value = c(0.75,0.9)),
+
   checkboxInput(inputId = "individual_obs",
                 label = strong("Show individual observations"),
-                value = FALSE),
+                value = TRUE),
+ 
+  checkboxInput(inputId = "remove_centromere",
+                label = strong("Remove centromere associated SNPs"),
+                value = TRUE),
+
   
-  checkboxInput(inputId = "density",
-                label = strong("Show density estimate"),
-                value = FALSE),
   
-  plotOutput(outputId = "main_plot", height = "300px"),
-  
-  # Display this only if the density is shown
-  conditionalPanel(condition = "input.density == true",
+
                    sliderInput(inputId = "bw_adjust",
-                               label = "Bandwidth adjustment:",
-                               min = 0.2, max = 2, value = 1, step = 0.2)
-  )
-  
+                               label = "Bin width adjustment:",
+                               min = 100000, max = 1000000, value = 2000000, step = 100000),
+
+
+uiOutput("colour_choice"),
+
+sliderInput(inputId = "spot_alpha",
+            label = "spot opacity",
+            min = 0.1, max = 1, value = 0.8, step = 0.1),
+
+
+ plotOutput(outputId = "main_plot", height = "300px"),
+ 
+
+ conditionalPanel(condition = "input.individual_obs == true",
+                  plotOutput(outputId = "snp_plot", height="300px")
+ 
+                )
+
 ))
 
